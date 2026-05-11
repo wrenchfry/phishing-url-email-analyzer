@@ -5,7 +5,7 @@ from pathlib import Path
 
 def extract_urls(text):
     pattern = r"https?://[^\s]+"
-    return re.findall(pattern, text)
+    return re.findall(pattern, text, flags=re.IGNORECASE)
 
 
 def read_email_text(path):

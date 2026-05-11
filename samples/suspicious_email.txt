@@ -10,6 +10,9 @@ verify your details before the end of the day.
 Open the secure verification page here:
 https://account-verify-help.com/login/secure-update
 
+Backup link:
+HTTPS://account-verify-help.com/restore-access
+
 If you do not complete this step, your account may be suspended.
 
 Support Team
