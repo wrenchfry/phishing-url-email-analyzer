@@ -34,3 +34,9 @@ Future improvements could include checking domain age and using reputation servi
 ## Status
 
 Early learning project. The first version will be built as a Python command-line tool.
+
+## Run
+
+```bash
+python src/main.py samples/suspicious_email.txt
+```
