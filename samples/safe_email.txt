@@ -1,0 +1,15 @@
+From: IT Helpdesk <helpdesk@example.org>
+To: learner@example.org
+Subject: Password awareness training reminder
+
+Hi,
+
+This is a reminder to complete the password awareness training by Friday.
+The training page is available on the internal learning portal:
+
+https://learning.example.org/security/password-awareness
+
+Please contact the IT Helpdesk if you have any questions.
+
+Regards,
+IT Helpdesk

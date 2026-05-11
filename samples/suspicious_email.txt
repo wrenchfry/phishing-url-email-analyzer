@@ -1,0 +1,15 @@
+From: Account Support <security-alert@account-verify-help.com>
+To: user@example.com
+Subject: Urgent: Your account will be locked today
+
+Dear user,
+
+We detected unusual activity on your account. To avoid losing access, please
+verify your details before the end of the day.
+
+Open the secure verification page here:
+https://account-verify-help.com/login/secure-update
+
+If you do not complete this step, your account may be suspended.
+
+Support Team
