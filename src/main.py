@@ -9,7 +9,14 @@ from url_checks import check_url, risk_label
 def extract_urls(text):
     pattern = r"https?://[^\s]+"
     urls = re.findall(pattern, text, flags=re.IGNORECASE)
-    return [url.rstrip(").,") for url in urls]
+    cleaned_urls = []
+
+    for url in urls:
+        cleaned_url = url.rstrip(").,")
+        if cleaned_url not in cleaned_urls:
+            cleaned_urls.append(cleaned_url)
+
+    return cleaned_urls
 
 
 def read_email_text(path):
