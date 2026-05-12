@@ -12,6 +12,12 @@ SUSPICIOUS_WORDS = [
     "free",
 ]
 
+BENIGN_TRAINING_WORDS = [
+    "awareness",
+    "training",
+    "learning",
+]
+
 
 def is_ip_address(hostname):
     return bool(re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", hostname))
@@ -36,6 +42,9 @@ def check_url(url):
 
     lower_url = url.lower()
     for word in SUSPICIOUS_WORDS:
+        if word == "password" and any(safe_word in lower_url for safe_word in BENIGN_TRAINING_WORDS):
+            continue
+
         if word in lower_url:
             findings.append(f"URL contains suspicious word: {word}")
             score += 1
