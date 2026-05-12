@@ -35,6 +35,13 @@ def is_ip_address(hostname):
     return bool(re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", hostname))
 
 
+def subdomain_count(domain):
+    if is_ip_address(domain):
+        return 0
+    parts = [part for part in domain.split(".") if part]
+    return max(len(parts) - 2, 0)
+
+
 def check_url(url):
     findings = []
     score = 0
@@ -55,6 +62,10 @@ def check_url(url):
     if domain in SHORTENED_URL_DOMAINS:
         findings.append("URL uses a shortened link service")
         score += 2
+
+    if subdomain_count(domain) >= 3:
+        findings.append("URL has many subdomains")
+        score += 1
 
     lower_url = url.lower()
     for word in SUSPICIOUS_WORDS:

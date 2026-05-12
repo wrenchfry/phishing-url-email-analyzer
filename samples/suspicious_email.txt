@@ -16,6 +16,9 @@ You can also use this link:
 Short link:
 https://bit.ly/account-restore
 
+Alternate login:
+https://login.secure.account.verify-help.example.com/update
+
 Backup link:
 HTTPS://account-verify-help.com/restore-access
 
