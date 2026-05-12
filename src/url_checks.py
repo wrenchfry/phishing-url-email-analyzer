@@ -2,6 +2,17 @@ from urllib.parse import urlparse
 import re
 
 
+SUSPICIOUS_WORDS = [
+    "login",
+    "verify",
+    "secure",
+    "update",
+    "password",
+    "account",
+    "free",
+]
+
+
 def is_ip_address(hostname):
     return bool(re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", hostname))
 
@@ -22,6 +33,12 @@ def check_url(url):
     elif is_ip_address(domain):
         findings.append("URL uses an IP address instead of a normal domain")
         score += 3
+
+    lower_url = url.lower()
+    for word in SUSPICIOUS_WORDS:
+        if word in lower_url:
+            findings.append(f"URL contains suspicious word: {word}")
+            score += 1
 
     return {
         "url": url,
