@@ -2,7 +2,7 @@ import re
 import sys
 from pathlib import Path
 
-from email_checks import check_email_text, get_subject
+from email_checks import check_email_text, get_sender_address, get_subject
 from url_checks import check_url, risk_label
 
 
@@ -32,9 +32,12 @@ def main():
     urls = extract_urls(email_text)
     email_result = check_email_text(email_text, urls)
     subject = get_subject(email_text)
+    sender = get_sender_address(email_text)
 
     if subject:
         print(f"Subject: {subject}")
+    if sender:
+        print(f"Sender: {sender}")
     print(f"Email Risk: {risk_label(email_result['score'])}")
     if email_result["findings"]:
         for finding in email_result["findings"]:
