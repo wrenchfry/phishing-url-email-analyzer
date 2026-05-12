@@ -13,6 +13,9 @@ https://account-verify-help.com/login/secure-update
 Backup link:
 HTTPS://account-verify-help.com/restore-access
 
+If the page is slow, use:
+http://192.168.10.44/login
+
 If you do not complete this step, your account may be suspended.
 
 Support Team

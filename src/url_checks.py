@@ -1,4 +1,9 @@
 from urllib.parse import urlparse
+import re
+
+
+def is_ip_address(hostname):
+    return bool(re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", hostname))
 
 
 def check_url(url):
@@ -14,6 +19,9 @@ def check_url(url):
     if not domain:
         findings.append("Could not read the domain")
         score += 1
+    elif is_ip_address(domain):
+        findings.append("URL uses an IP address instead of a normal domain")
+        score += 3
 
     return {
         "url": url,
