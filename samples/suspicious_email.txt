@@ -13,6 +13,9 @@ https://account-verify-help.com/login/secure-update
 You can also use this link:
 [Company portal](https://account-verify-help.com/login/secure-update)
 
+Short link:
+https://bit.ly/account-restore
+
 Backup link:
 HTTPS://account-verify-help.com/restore-access
 

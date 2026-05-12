@@ -22,6 +22,14 @@ BENIGN_TRAINING_WORDS = [
     "learning",
 ]
 
+SHORTENED_URL_DOMAINS = [
+    "bit.ly",
+    "tinyurl.com",
+    "t.co",
+    "cutt.ly",
+    "is.gd",
+]
+
 
 def is_ip_address(hostname):
     return bool(re.fullmatch(r"\d{1,3}(\.\d{1,3}){3}", hostname))
@@ -43,6 +51,10 @@ def check_url(url):
     elif is_ip_address(domain):
         findings.append("URL uses an IP address instead of a normal domain")
         score += 3
+
+    if domain in SHORTENED_URL_DOMAINS:
+        findings.append("URL uses a shortened link service")
+        score += 2
 
     lower_url = url.lower()
     for word in SUSPICIOUS_WORDS:
