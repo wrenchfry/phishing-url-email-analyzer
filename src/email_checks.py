@@ -20,6 +20,13 @@ def get_sender_domain(text):
     return ""
 
 
+def get_subject(text):
+    match = re.search(r"^Subject:\s*(.+)$", text, flags=re.MULTILINE)
+    if match:
+        return match.group(1).strip()
+    return ""
+
+
 def get_url_domain(url):
     return urlparse(url).netloc.lower()
 
