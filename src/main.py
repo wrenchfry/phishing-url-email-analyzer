@@ -2,6 +2,7 @@ import re
 import sys
 from pathlib import Path
 
+from email_checks import check_email_text
 from url_checks import check_url, risk_label
 
 
@@ -21,6 +22,15 @@ def main():
 
     email_text = read_email_text(sys.argv[1])
     urls = extract_urls(email_text)
+    email_result = check_email_text(email_text)
+
+    print(f"Email Risk: {risk_label(email_result['score'])}")
+    if email_result["findings"]:
+        for finding in email_result["findings"]:
+            print(f"- {finding}")
+    else:
+        print("- No obvious email wording issues found")
+    print()
 
     if not urls:
         print("No URLs found.")
