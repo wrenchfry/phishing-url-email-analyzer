@@ -3,13 +3,17 @@ import re
 
 
 SUSPICIOUS_WORDS = [
+    "access",
+    "billing",
     "login",
-    "verify",
-    "secure",
-    "update",
-    "password",
     "account",
     "free",
+    "password",
+    "restore",
+    "secure",
+    "suspend",
+    "update",
+    "verify",
 ]
 
 BENIGN_TRAINING_WORDS = [
