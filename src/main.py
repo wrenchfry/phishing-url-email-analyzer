@@ -2,6 +2,8 @@ import re
 import sys
 from pathlib import Path
 
+from url_checks import check_url, risk_label
+
 
 def extract_urls(text):
     pattern = r"https?://[^\s]+"
@@ -27,6 +29,13 @@ def main():
     print("URLs found:")
     for url in urls:
         print(f"- {url}")
+        result = check_url(url)
+        print(f"  Risk: {risk_label(result['score'])}")
+        if result["findings"]:
+            for finding in result["findings"]:
+                print(f"  - {finding}")
+        else:
+            print("  - No obvious URL issues found")
 
 
 if __name__ == "__main__":
