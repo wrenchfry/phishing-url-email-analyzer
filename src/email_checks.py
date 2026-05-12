@@ -28,9 +28,10 @@ def check_email_text(text, urls=None):
     findings = []
     score = 0
     urls = urls or []
+    lower_text = text.lower()
 
     for word in URGENCY_WORDS:
-        if word in text:
+        if word in lower_text:
             findings.append(f"Email uses urgency language: {word}")
             score += 1
 
