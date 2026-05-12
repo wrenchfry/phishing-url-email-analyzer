@@ -8,7 +8,8 @@ from url_checks import check_url, risk_label
 
 def extract_urls(text):
     pattern = r"https?://[^\s]+"
-    return re.findall(pattern, text, flags=re.IGNORECASE)
+    urls = re.findall(pattern, text, flags=re.IGNORECASE)
+    return [url.rstrip(").,") for url in urls]
 
 
 def read_email_text(path):
