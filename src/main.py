@@ -22,7 +22,7 @@ def main():
 
     email_text = read_email_text(sys.argv[1])
     urls = extract_urls(email_text)
-    email_result = check_email_text(email_text)
+    email_result = check_email_text(email_text, urls)
 
     print(f"Email Risk: {risk_label(email_result['score'])}")
     if email_result["findings"]:
