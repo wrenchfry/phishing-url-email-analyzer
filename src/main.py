@@ -47,16 +47,20 @@ def main():
     subject = get_subject(email_text)
     sender = get_sender_address(email_text)
 
-    print(f"Overall Risk: {overall_label}")
-    print(f"Total Score: {total_score}")
+    print("Summary")
+    print("-------")
+    print(f"Overall risk: {overall_label}")
+    print(f"Total score: {total_score}")
     print(f"Recommendation: {recommendation}")
     print()
 
+    print("Email")
+    print("-----")
     if subject:
         print(f"Subject: {subject}")
     if sender:
         print(f"Sender: {sender}")
-    print(f"Email Risk: {risk_label(email_result['score'])}")
+    print(f"Email risk: {risk_label(email_result['score'])}")
     if email_result["findings"]:
         for finding in email_result["findings"]:
             print(f"- {finding}")
@@ -68,10 +72,11 @@ def main():
         print("No URLs found.")
         return
 
-    print("URLs found:")
+    print("URLs")
+    print("----")
     for result in url_results:
         print(f"- {result['url']}")
-        print(f"  Risk: {risk_label(result['score'])}")
+        print(f"  risk: {risk_label(result['score'])}")
         if result["findings"]:
             for finding in result["findings"]:
                 print(f"  - {finding}")
