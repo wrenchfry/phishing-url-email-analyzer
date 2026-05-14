@@ -10,12 +10,19 @@ That experience made me want to understand how suspicious links, impersonation, 
 
 ## Planned Features
 
+Current checks include:
+
 - Extract URLs from pasted email text.
+- Deduplicate repeated URLs.
+- Show the email subject and sender address.
 - Check URLs for suspicious words such as `login`, `verify`, `password`, and `free`.
 - Detect links that use IP addresses instead of normal domains.
-- Flag possible brand impersonation when a known brand appears in an unusual domain.
+- Detect shortened links such as `bit.ly`.
+- Flag URLs with many subdomains.
 - Look for urgent or threatening language in email text.
-- Generate a simple markdown report with findings and a risk level.
+- Compare sender domains with link domains.
+- Check simple link text and destination mismatches.
+- Generate a markdown report with findings and a risk level.
 
 ## What This Project Demonstrates
 
@@ -27,7 +34,9 @@ That experience made me want to understand how suspicious links, impersonation, 
 
 ## Limitations
 
-This tool will not prove that a URL is malicious. The first version will use simple rule-based checks only. It will not open suspicious links, download files, collect credentials, or perform offensive testing.
+This tool will not prove that a URL is malicious. It uses simple rule-based checks only, so it can miss real phishing links and it can also flag safe links by mistake.
+
+It does not open suspicious links, download files, collect credentials, scan attachments, or perform offensive testing. The sample emails are for learning and demonstration only.
 
 Future improvements could include checking domain age and using reputation services such as VirusTotal, Google Safe Browsing, URLScan.io, or PhishTank.
 
@@ -40,3 +49,20 @@ Early learning project. The first version will be built as a Python command-line
 ```bash
 python src/main.py samples/suspicious_email.txt
 ```
+
+To write a markdown report:
+
+```bash
+python src/main.py samples/suspicious_email.txt --report reports/sample_phishing_analysis.md
+```
+
+To run the basic tests:
+
+```bash
+python -m unittest discover -s tests
+```
+
+## Learning Notes
+
+- [Phishing awareness brief](docs/phishing_awareness_brief.md)
+- [Evidence handling notes](docs/evidence_handling_notes.md)
