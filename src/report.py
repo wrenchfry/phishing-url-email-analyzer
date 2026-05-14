@@ -34,9 +34,10 @@ def build_markdown_report(subject, sender, email_result, url_results, total_scor
     lines.extend(["", "## URL Findings", ""])
 
     if url_results:
-        for result in url_results:
-            lines.append(f"### {result['url']}")
+        for index, result in enumerate(url_results, start=1):
+            lines.append(f"### URL {index}")
             lines.append("")
+            lines.append(f"- URL: {result['url']}")
             lines.append(f"- Domain: {result['domain'] or 'Not found'}")
             lines.append(f"- Risk: {risk_label(result['score'])}")
             if result["findings"]:

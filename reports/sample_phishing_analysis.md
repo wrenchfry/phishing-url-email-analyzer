@@ -1,6 +1,6 @@
 # Phishing Analysis Report
 
-Generated: 2026-05-14 20:39
+Generated: 2026-05-14 20:43
 
 ## Summary
 
@@ -28,8 +28,9 @@ Generated: 2026-05-14 20:39
 
 ## URL Findings
 
-### https://account-verify-help.com/login/secure-update
+### URL 1
 
+- URL: https://account-verify-help.com/login/secure-update
 - Domain: account-verify-help.com
 - Risk: High
 - URL contains suspicious word: login
@@ -38,16 +39,18 @@ Generated: 2026-05-14 20:39
 - URL contains suspicious word: update
 - URL contains suspicious word: verify
 
-### https://bit.ly/account-restore
+### URL 2
 
+- URL: https://bit.ly/account-restore
 - Domain: bit.ly
 - Risk: Medium
 - URL uses a shortened link service
 - URL contains suspicious word: account
 - URL contains suspicious word: restore
 
-### https://login.secure.account.verify-help.example.com/update
+### URL 3
 
+- URL: https://login.secure.account.verify-help.example.com/update
 - Domain: login.secure.account.verify-help.example.com
 - Risk: High
 - URL has many subdomains
@@ -57,8 +60,9 @@ Generated: 2026-05-14 20:39
 - URL contains suspicious word: update
 - URL contains suspicious word: verify
 
-### HTTPS://account-verify-help.com/restore-access
+### URL 4
 
+- URL: HTTPS://account-verify-help.com/restore-access
 - Domain: account-verify-help.com
 - Risk: Medium
 - URL contains suspicious word: access
@@ -66,8 +70,9 @@ Generated: 2026-05-14 20:39
 - URL contains suspicious word: restore
 - URL contains suspicious word: verify
 
-### http://192.168.10.44/login
+### URL 5
 
+- URL: http://192.168.10.44/login
 - Domain: 192.168.10.44
 - Risk: High
 - URL does not use HTTPS
