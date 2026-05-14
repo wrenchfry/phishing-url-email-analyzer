@@ -23,6 +23,14 @@ def read_email_text(path):
     return Path(path).read_text(encoding="utf-8")
 
 
+def recommendation_for(label):
+    if label == "High":
+        return "Do not click links. Report this message to IT or security."
+    if label == "Medium":
+        return "Review carefully before clicking any links."
+    return "No major warning signs found from these simple checks."
+
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python src/main.py samples/suspicious_email.txt")
@@ -31,8 +39,16 @@ def main():
     email_text = read_email_text(sys.argv[1])
     urls = extract_urls(email_text)
     email_result = check_email_text(email_text, urls)
+    url_results = [check_url(url) for url in urls]
+    total_score = email_result["score"] + sum(result["score"] for result in url_results)
+    overall_label = risk_label(total_score)
     subject = get_subject(email_text)
     sender = get_sender_address(email_text)
+
+    print(f"Overall Risk: {overall_label}")
+    print(f"Total Score: {total_score}")
+    print(f"Recommendation: {recommendation_for(overall_label)}")
+    print()
 
     if subject:
         print(f"Subject: {subject}")
@@ -51,9 +67,8 @@ def main():
         return
 
     print("URLs found:")
-    for url in urls:
-        print(f"- {url}")
-        result = check_url(url)
+    for result in url_results:
+        print(f"- {result['url']}")
         print(f"  Risk: {risk_label(result['score'])}")
         if result["findings"]:
             for finding in result["findings"]:
