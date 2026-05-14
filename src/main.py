@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from email_checks import check_email_text, get_sender_address, get_subject
+from report import build_markdown_report
 from url_checks import check_url, risk_label
 
 
@@ -33,7 +34,7 @@ def recommendation_for(label):
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: python src/main.py samples/suspicious_email.txt")
+        print("Usage: python src/main.py samples/suspicious_email.txt [--report reports/report.md]")
         return
 
     email_text = read_email_text(sys.argv[1])
@@ -42,12 +43,13 @@ def main():
     url_results = [check_url(url) for url in urls]
     total_score = email_result["score"] + sum(result["score"] for result in url_results)
     overall_label = risk_label(total_score)
+    recommendation = recommendation_for(overall_label)
     subject = get_subject(email_text)
     sender = get_sender_address(email_text)
 
     print(f"Overall Risk: {overall_label}")
     print(f"Total Score: {total_score}")
-    print(f"Recommendation: {recommendation_for(overall_label)}")
+    print(f"Recommendation: {recommendation}")
     print()
 
     if subject:
@@ -75,6 +77,27 @@ def main():
                 print(f"  - {finding}")
         else:
             print("  - No obvious URL issues found")
+
+    if "--report" in sys.argv:
+        report_index = sys.argv.index("--report")
+        if len(sys.argv) <= report_index + 1:
+            print()
+            print("Report path missing after --report")
+            return
+
+        report_path = Path(sys.argv[report_index + 1])
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_text = build_markdown_report(
+            subject,
+            sender,
+            email_result,
+            url_results,
+            total_score,
+            recommendation,
+        )
+        report_path.write_text(report_text, encoding="utf-8")
+        print()
+        print(f"Report written to {report_path}")
 
 
 if __name__ == "__main__":
