@@ -4,5 +4,5 @@ __pycache__/
 .venv/
 build/
 *.egg-info/
-reports/*.generated.md
-reports/*.generated.json
+reports/*.output.md
+reports/*.output.json

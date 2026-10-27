@@ -1,6 +1,6 @@
 # Phishing Analysis Report
 
-Generated: 2026-10-27 16:52
+Created: 2026-10-27 16:52
 
 ## Summary
 

@@ -5,7 +5,7 @@ def build_markdown_report(analysis):
     lines = [
         "# Phishing Analysis Report",
         "",
-        f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+        f"Created: {datetime.now().strftime('%Y-%m-%d %H:%M')}",
         "",
         "## Summary",
         "",
