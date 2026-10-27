@@ -6,8 +6,8 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
-from email_parser import parse_eml  # noqa: E402
-from signals import summarize_signals  # noqa: E402
+from email_parser import parse_eml
+from signals import summarize_signals
 
 
 class EmailParserTest(unittest.TestCase):

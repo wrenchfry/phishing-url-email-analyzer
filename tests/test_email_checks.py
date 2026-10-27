@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
-from email_checks import check_email_message  # noqa: E402
+from email_checks import check_email_message
 
 
 def messages(result):

@@ -4,7 +4,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[1] / "src"))
 
-from url_checks import check_url, registrable_domain, subdomain_count  # noqa: E402
+from url_checks import check_url, registrable_domain, subdomain_count
 
 
 def messages(result):
