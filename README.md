@@ -8,7 +8,7 @@ I became interested in phishing analysis after a personal incident where I downl
 
 That experience made me want to understand how suspicious links, impersonation, downloads, and social engineering can lead to account compromise. This project is my way of turning that mistake into practical cybersecurity learning.
 
-## Planned Features
+## What It Checks
 
 Current checks include:
 
@@ -22,6 +22,55 @@ Current checks include:
 - Flag URLs with many subdomains.
 - Look for urgent or threatening language, sender spoofing indicators, failed authentication headers, and risky attachment extensions.
 - Generate explainable terminal, Markdown, and JSON reports with evidence and recommended next actions.
+
+## Architecture
+
+```text
+Email file -> Parser -> URL, header, and attachment checks -> Findings -> terminal, Markdown, or JSON report
+```
+
+Each stage stays local to your computer. The program reads the input and metadata only; it does not visit suspicious links, follow redirects, or execute attachments.
+
+## Demo
+
+Analyse the included suspicious message and save two report formats:
+
+```bash
+python src/main.py samples/suspicious_email.txt --report reports/sample_phishing_analysis.md --json reports/sample_phishing_analysis.json
+```
+
+Example terminal result:
+
+```text
+Summary
+-------
+Overall risk: High
+Safety: this tool did not open URLs or attachments.
+
+Findings
+--------
+- [HIGH] URL structure
+  - URL uses an IP address instead of a named domain
+    Evidence: 192.168.10.44
+    Next step: Do not open the link; use the organisation's known website instead.
+```
+
+The command also creates an explainable [Markdown report](reports/sample_phishing_analysis.md) and a machine-readable [JSON report](reports/sample_phishing_analysis.json).
+
+## Sample Inputs
+
+- [`safe_internal_reminder.eml`](samples/safe_internal_reminder.eml): a routine internal-training reminder that should remain low risk.
+- [`fake_microsoft_reply_to.eml`](samples/fake_microsoft_reply_to.eml): a fake Microsoft-themed message with a mismatched Reply-To address, failed SPF result, and an `@` URL trick.
+- [`suspicious_attachment.eml`](samples/suspicious_attachment.eml): an invoice-style message containing a double-extension executable attachment name.
+
+These are fictional, safe learning samples. Their URLs use reserved example domains and their attachment payload is harmless text.
+
+## Design Decisions
+
+- **Offline-first:** the tool deliberately does not fetch URLs, follow redirects, or run attachments. This keeps analysis safer and predictable.
+- **Explainable findings:** every signal includes its severity, the evidence that caused it, and a suggested next action. It does not hide a verdict behind one unexplained number.
+- **Registrable-domain comparison:** `signin.paypal.co.uk` is compared as `paypal.co.uk`, rather than using fragile word matching.
+- **Conservative claims:** a finding is an indicator to investigate, not proof that an email is malicious. Legitimate mail can use third-party delivery or tracking domains.
 
 ## What This Project Demonstrates
 
@@ -43,30 +92,33 @@ Future improvements could include an opt-in reputation lookup mode using service
 
 Learning project. The tool is a Python command-line application designed to make each rule and its limitations visible.
 
-## Run
+## Installation and Use
+
+```bash
+python -m pip install ".[dev]"
+python -m unittest discover -s tests
+python -m ruff check .
+```
+
+For a lightweight runtime-only installation, use:
 
 ```bash
 python -m pip install -r requirements.txt
-python src/main.py samples/suspicious_email.txt
 ```
 
-To write a markdown report:
+Useful commands:
 
 ```bash
-python src/main.py samples/suspicious_email.txt --report reports/sample_phishing_analysis.md
+python src/main.py --help
+python src/main.py --version
+python src/main.py samples/safe_internal_reminder.eml
+python src/main.py samples/fake_microsoft_reply_to.eml --format json
+python src/main.py suspicious-message.eml --report reports/analysis.md --json reports/analysis.json
 ```
 
-To analyse a real exported email safely:
+## Quality Checks
 
-```bash
-python src/main.py suspicious-message.eml --format json --json reports/analysis.json
-```
-
-To run the basic tests:
-
-```bash
-python -m unittest discover -s tests
-```
+GitHub Actions runs Ruff and the full unit-test suite on every push and pull request. The local commands above use the same checks.
 
 ## Learning Notes
 
