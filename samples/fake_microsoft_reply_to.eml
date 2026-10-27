@@ -1,0 +1,13 @@
+From: Microsoft Account Team <account-alert@account-protection.example>
+Reply-To: Account Recovery <recovery@credential-collection.example>
+Return-Path: <bounce@account-protection.example>
+Authentication-Results: mail.example; spf=fail smtp.mailfrom=account-protection.example
+To: learner@example.org
+Subject: Action required: account locked today
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+
+Your Microsoft account will be locked today because of unusual activity.
+Verify your details urgently:
+
+https://microsoft.com@credential-collection.example/login

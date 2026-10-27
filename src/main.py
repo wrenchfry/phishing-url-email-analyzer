@@ -9,6 +9,8 @@ from report import build_markdown_report
 from signals import summarize_signals
 from url_checks import check_url
 
+VERSION = "0.2.0"
+
 
 def extract_urls(text):
     urls = re.findall(r"https?://[^\s]+", text, flags=re.IGNORECASE)
@@ -57,6 +59,7 @@ def main():
     parser.add_argument("--report", type=Path, help="Write a Markdown report")
     parser.add_argument("--format", choices=("text", "json"), default="text", help="Choose terminal output")
     parser.add_argument("--json", type=Path, dest="json_path", help="Write the full analysis as JSON")
+    parser.add_argument("--version", action="version", version=f"phishing-analyzer {VERSION}")
     args = parser.parse_args()
 
     analysis = analyze_file(args.input)

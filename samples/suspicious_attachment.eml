@@ -1,0 +1,18 @@
+From: Finance Team <invoices@vendor-notices.example>
+To: learner@example.org
+Subject: Invoice 1048 attached
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="invoice-boundary"
+
+--invoice-boundary
+Content-Type: text/plain; charset="utf-8"
+
+Please review the attached invoice before processing payment.
+
+--invoice-boundary
+Content-Type: application/octet-stream; name="invoice-1048.pdf.exe"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="invoice-1048.pdf.exe"
+
+bm90IGEgcmVhbCBleGVjdXRhYmxl
+--invoice-boundary--
