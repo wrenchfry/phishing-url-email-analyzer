@@ -1,80 +1,79 @@
 # Phishing Analysis Report
 
-Generated: 2026-05-14 20:43
+Generated: 2026-10-27 16:52
 
 ## Summary
 
 - Overall risk: High
-- Total score: 36
-- Recommendation: Do not click links. Report this message to IT or security.
+- No URLs or attachments were opened by this tool.
 
 ## Email Details
 
 - Subject: Urgent: Your account will be locked today
 - Sender: security-alert@account-verify-help.com
-- Email wording risk: High
+- Input format: plain text
 
-## Email Findings
+## Findings by Category
 
-- Email uses urgency language: urgent
-- Email uses urgency language: today
-- Email uses urgency language: locked
-- Email uses urgency language: suspended
-- Email uses urgency language: unusual activity
-- Email uses urgency language: losing access
-- Email uses urgency language: before the end of the day
-- Sender domain does not match link domain: account-verify-help.com -> bit.ly
-- Link text may not match destination: Company portal -> account-verify-help.com
+### URL structure - High risk
 
-## URL Findings
+- **URL uses a shortened-link service**
+  - Evidence: bit.ly
+  - Why it matters: Preview or verify the final destination before opening it.
+- **URL has many subdomains**
+  - Evidence: login.secure.account.verify-help.example.com
+  - Why it matters: Check the registrable domain, not the words at the start of the link.
+- **URL uses an IP address instead of a named domain**
+  - Evidence: 192.168.10.44
+  - Why it matters: Do not open the link; use the organisation's known website instead.
 
-### URL 1
+### Social engineering - Medium risk
 
-- URL: https://account-verify-help.com/login/secure-update
-- Domain: account-verify-help.com
-- Risk: High
-- URL contains suspicious word: login
-- URL contains suspicious word: account
-- URL contains suspicious word: secure
-- URL contains suspicious word: update
-- URL contains suspicious word: verify
+- **Email uses pressure or urgency language**
+  - Evidence: urgent, today, locked, suspended, unusual activity, losing access, before the end of the day
+  - Why it matters: Pause before acting and verify the request through a trusted channel.
 
-### URL 2
+### Sender identity - Medium risk
 
-- URL: https://bit.ly/account-restore
-- Domain: bit.ly
-- Risk: Medium
-- URL uses a shortened link service
-- URL contains suspicious word: account
-- URL contains suspicious word: restore
+- **Link domain differs from the sender's registrable domain**
+  - Evidence: account-verify-help.com -> bit.ly
+  - Why it matters: Verify whether the sender normally uses this domain before opening the link.
 
-### URL 3
+### URL transport - Medium risk
 
-- URL: https://login.secure.account.verify-help.example.com/update
-- Domain: login.secure.account.verify-help.example.com
-- Risk: High
-- URL has many subdomains
-- URL contains suspicious word: login
-- URL contains suspicious word: account
-- URL contains suspicious word: secure
-- URL contains suspicious word: update
-- URL contains suspicious word: verify
+- **URL does not use HTTPS**
+  - Evidence: http://192.168.10.44/login
+  - Why it matters: Do not submit information through this link.
 
-### URL 4
+## URLs
 
-- URL: HTTPS://account-verify-help.com/restore-access
-- Domain: account-verify-help.com
-- Risk: Medium
-- URL contains suspicious word: access
-- URL contains suspicious word: account
-- URL contains suspicious word: restore
-- URL contains suspicious word: verify
+### https://account-verify-help.com/login/secure-update
 
-### URL 5
+- Registrable domain: account-verify-help.com
+- No URL-specific warning signals found.
 
-- URL: http://192.168.10.44/login
-- Domain: 192.168.10.44
-- Risk: High
-- URL does not use HTTPS
-- URL uses an IP address instead of a normal domain
-- URL contains suspicious word: login
+### https://bit.ly/account-restore
+
+- Registrable domain: bit.ly
+
+### https://login.secure.account.verify-help.example.com/update
+
+- Registrable domain: example.com
+
+### HTTPS://account-verify-help.com/restore-access
+
+- Registrable domain: account-verify-help.com
+- No URL-specific warning signals found.
+
+### http://192.168.10.44/login
+
+- Registrable domain: 192.168.10.44
+
+## Recommended Next Steps
+
+- Pause before acting and verify the request through a trusted channel.
+- Verify whether the sender normally uses this domain before opening the link.
+- Preview or verify the final destination before opening it.
+- Check the registrable domain, not the words at the start of the link.
+- Do not submit information through this link.
+- Do not open the link; use the organisation's known website instead.

@@ -1,108 +1,77 @@
+import argparse
+import json
 import re
-import sys
 from pathlib import Path
 
-from email_checks import check_email_text, get_sender_address, get_subject
+from email_checks import check_email_message
+from email_parser import read_message
 from report import build_markdown_report
-from url_checks import check_url, risk_label
+from signals import summarize_signals
+from url_checks import check_url
 
 
 def extract_urls(text):
-    pattern = r"https?://[^\s]+"
-    urls = re.findall(pattern, text, flags=re.IGNORECASE)
-    cleaned_urls = []
-
-    for url in urls:
-        cleaned_url = url.rstrip(").,")
-        if cleaned_url not in cleaned_urls:
-            cleaned_urls.append(cleaned_url)
-
-    return cleaned_urls
+    urls = re.findall(r"https?://[^\s]+", text, flags=re.IGNORECASE)
+    return list(dict.fromkeys(url.rstrip(").,") for url in urls))
 
 
-def read_email_text(path):
-    return Path(path).read_text(encoding="utf-8")
+def analyze_file(path):
+    message = read_message(path)
+    url_results = [check_url(url) for url in extract_urls(message["text"])]
+    email_result = check_email_message(message, url_results)
+    signals = [*email_result["signals"], *(item for result in url_results for item in result["signals"])]
+    return {
+        "input": {"path": str(path), "is_eml": message["is_eml"], "attachment_count": len(message["attachments"])},
+        "email": email_result,
+        "attachments": message["attachments"],
+        "urls": url_results,
+        "summary": summarize_signals(signals),
+    }
 
 
-def recommendation_for(label):
-    if label == "High":
-        return "Do not click links. Report this message to IT or security."
-    if label == "Medium":
-        return "Review carefully before clicking any links."
-    return "No major warning signs found from these simple checks."
+def print_terminal_report(analysis):
+    print("Summary\n-------")
+    print(f"Overall risk: {analysis['summary']['overall_risk']}")
+    print("Safety: this tool did not open URLs or attachments.\n")
+    print("Findings\n--------")
+    if not analysis["summary"]["groups"]:
+        print("- No warning signals found. This does not prove the message is safe.")
+    for group in analysis["summary"]["groups"]:
+        print(f"- [{group['severity'].upper()}] {group['category']}")
+        for item in group["signals"]:
+            print(f"  - {item['message']}\n    Evidence: {item['evidence']}\n    Next step: {item['recommendation']}")
+    print("\nURLs\n----")
+    if not analysis["urls"]:
+        print("- No URLs found.")
+    for result in analysis["urls"]:
+        print(f"- {result['url']}\n  Registrable domain: {result['registrable_domain'] or 'Not found'}")
+    if analysis["attachments"]:
+        print("\nAttachments\n-----------")
+        for attachment in analysis["attachments"]:
+            print(f"- {attachment['filename']} ({attachment['content_type']}, {attachment['size_bytes']} bytes)")
 
 
 def main():
-    if len(sys.argv) < 2:
-        print("Usage: python src/main.py samples/suspicious_email.txt [--report reports/report.md]")
-        return
+    parser = argparse.ArgumentParser(description="Offline phishing email and URL triage tool")
+    parser.add_argument("input", type=Path, help="Plain-text email or .eml file")
+    parser.add_argument("--report", type=Path, help="Write a Markdown report")
+    parser.add_argument("--format", choices=("text", "json"), default="text", help="Choose terminal output")
+    parser.add_argument("--json", type=Path, dest="json_path", help="Write the full analysis as JSON")
+    args = parser.parse_args()
 
-    email_text = read_email_text(sys.argv[1])
-    urls = extract_urls(email_text)
-    email_result = check_email_text(email_text, urls)
-    url_results = [check_url(url) for url in urls]
-    total_score = email_result["score"] + sum(result["score"] for result in url_results)
-    overall_label = risk_label(total_score)
-    recommendation = recommendation_for(overall_label)
-    subject = get_subject(email_text)
-    sender = get_sender_address(email_text)
-
-    print("Summary")
-    print("-------")
-    print(f"Overall risk: {overall_label}")
-    print(f"Total score: {total_score}")
-    print(f"Recommendation: {recommendation}")
-    print()
-
-    print("Email")
-    print("-----")
-    if subject:
-        print(f"Subject: {subject}")
-    if sender:
-        print(f"Sender: {sender}")
-    print(f"Email risk: {risk_label(email_result['score'])}")
-    if email_result["findings"]:
-        for finding in email_result["findings"]:
-            print(f"- {finding}")
+    analysis = analyze_file(args.input)
+    if args.format == "json":
+        print(json.dumps(analysis, indent=2))
     else:
-        print("- No obvious email wording issues found")
-    print()
-
-    if not urls:
-        print("No URLs found.")
-        return
-
-    print("URLs")
-    print("----")
-    for result in url_results:
-        print(f"- {result['url']}")
-        print(f"  risk: {risk_label(result['score'])}")
-        if result["findings"]:
-            for finding in result["findings"]:
-                print(f"  - {finding}")
-        else:
-            print("  - No obvious URL issues found")
-
-    if "--report" in sys.argv:
-        report_index = sys.argv.index("--report")
-        if len(sys.argv) <= report_index + 1:
-            print()
-            print("Report path missing after --report")
-            return
-
-        report_path = Path(sys.argv[report_index + 1])
-        report_path.parent.mkdir(parents=True, exist_ok=True)
-        report_text = build_markdown_report(
-            subject,
-            sender,
-            email_result,
-            url_results,
-            total_score,
-            recommendation,
-        )
-        report_path.write_text(report_text, encoding="utf-8")
-        print()
-        print(f"Report written to {report_path}")
+        print_terminal_report(analysis)
+    if args.report:
+        args.report.parent.mkdir(parents=True, exist_ok=True)
+        args.report.write_text(build_markdown_report(analysis), encoding="utf-8")
+        print(f"Markdown report written to {args.report}")
+    if args.json_path:
+        args.json_path.parent.mkdir(parents=True, exist_ok=True)
+        args.json_path.write_text(json.dumps(analysis, indent=2) + "\n", encoding="utf-8")
+        print(f"JSON report written to {args.json_path}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,174 @@
+{
+  "input": {
+    "path": "samples\\suspicious_email.txt",
+    "is_eml": false,
+    "attachment_count": 0
+  },
+  "email": {
+    "sender": "security-alert@account-verify-help.com",
+    "subject": "Urgent: Your account will be locked today",
+    "signals": [
+      {
+        "category": "Social engineering",
+        "severity": "medium",
+        "message": "Email uses pressure or urgency language",
+        "evidence": "urgent, today, locked, suspended, unusual activity, losing access, before the end of the day",
+        "recommendation": "Pause before acting and verify the request through a trusted channel."
+      },
+      {
+        "category": "Sender identity",
+        "severity": "medium",
+        "message": "Link domain differs from the sender's registrable domain",
+        "evidence": "account-verify-help.com -> bit.ly",
+        "recommendation": "Verify whether the sender normally uses this domain before opening the link."
+      }
+    ]
+  },
+  "attachments": [],
+  "urls": [
+    {
+      "url": "https://account-verify-help.com/login/secure-update",
+      "domain": "account-verify-help.com",
+      "registrable_domain": "account-verify-help.com",
+      "signals": []
+    },
+    {
+      "url": "https://bit.ly/account-restore",
+      "domain": "bit.ly",
+      "registrable_domain": "bit.ly",
+      "signals": [
+        {
+          "category": "URL structure",
+          "severity": "medium",
+          "message": "URL uses a shortened-link service",
+          "evidence": "bit.ly",
+          "recommendation": "Preview or verify the final destination before opening it."
+        }
+      ]
+    },
+    {
+      "url": "https://login.secure.account.verify-help.example.com/update",
+      "domain": "login.secure.account.verify-help.example.com",
+      "registrable_domain": "example.com",
+      "signals": [
+        {
+          "category": "URL structure",
+          "severity": "medium",
+          "message": "URL has many subdomains",
+          "evidence": "login.secure.account.verify-help.example.com",
+          "recommendation": "Check the registrable domain, not the words at the start of the link."
+        }
+      ]
+    },
+    {
+      "url": "HTTPS://account-verify-help.com/restore-access",
+      "domain": "account-verify-help.com",
+      "registrable_domain": "account-verify-help.com",
+      "signals": []
+    },
+    {
+      "url": "http://192.168.10.44/login",
+      "domain": "192.168.10.44",
+      "registrable_domain": "192.168.10.44",
+      "signals": [
+        {
+          "category": "URL transport",
+          "severity": "medium",
+          "message": "URL does not use HTTPS",
+          "evidence": "http://192.168.10.44/login",
+          "recommendation": "Do not submit information through this link."
+        },
+        {
+          "category": "URL structure",
+          "severity": "high",
+          "message": "URL uses an IP address instead of a named domain",
+          "evidence": "192.168.10.44",
+          "recommendation": "Do not open the link; use the organisation's known website instead."
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "overall_risk": "High",
+    "groups": [
+      {
+        "category": "URL structure",
+        "severity": "high",
+        "capped_score": 5,
+        "signals": [
+          {
+            "category": "URL structure",
+            "severity": "medium",
+            "message": "URL uses a shortened-link service",
+            "evidence": "bit.ly",
+            "recommendation": "Preview or verify the final destination before opening it."
+          },
+          {
+            "category": "URL structure",
+            "severity": "medium",
+            "message": "URL has many subdomains",
+            "evidence": "login.secure.account.verify-help.example.com",
+            "recommendation": "Check the registrable domain, not the words at the start of the link."
+          },
+          {
+            "category": "URL structure",
+            "severity": "high",
+            "message": "URL uses an IP address instead of a named domain",
+            "evidence": "192.168.10.44",
+            "recommendation": "Do not open the link; use the organisation's known website instead."
+          }
+        ]
+      },
+      {
+        "category": "Social engineering",
+        "severity": "medium",
+        "capped_score": 2,
+        "signals": [
+          {
+            "category": "Social engineering",
+            "severity": "medium",
+            "message": "Email uses pressure or urgency language",
+            "evidence": "urgent, today, locked, suspended, unusual activity, losing access, before the end of the day",
+            "recommendation": "Pause before acting and verify the request through a trusted channel."
+          }
+        ]
+      },
+      {
+        "category": "Sender identity",
+        "severity": "medium",
+        "capped_score": 2,
+        "signals": [
+          {
+            "category": "Sender identity",
+            "severity": "medium",
+            "message": "Link domain differs from the sender's registrable domain",
+            "evidence": "account-verify-help.com -> bit.ly",
+            "recommendation": "Verify whether the sender normally uses this domain before opening the link."
+          }
+        ]
+      },
+      {
+        "category": "URL transport",
+        "severity": "medium",
+        "capped_score": 2,
+        "signals": [
+          {
+            "category": "URL transport",
+            "severity": "medium",
+            "message": "URL does not use HTTPS",
+            "evidence": "http://192.168.10.44/login",
+            "recommendation": "Do not submit information through this link."
+          }
+        ]
+      }
+    ],
+    "recommendations": [
+      "Pause before acting and verify the request through a trusted channel.",
+      "Verify whether the sender normally uses this domain before opening the link.",
+      "Preview or verify the final destination before opening it.",
+      "Check the registrable domain, not the words at the start of the link.",
+      "Do not submit information through this link.",
+      "Do not open the link; use the organisation's known website instead."
+    ]
+  }
+}
