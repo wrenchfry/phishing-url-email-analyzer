@@ -95,6 +95,7 @@ Learning project. The tool is a Python command-line application designed to make
 ## Installation and Use
 
 ```bash
+python -m pip install --upgrade pip setuptools
 python -m pip install ".[dev]"
 python -m unittest discover -s tests
 python -m ruff check .
