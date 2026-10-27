@@ -22,7 +22,9 @@ class UrlChecksTest(unittest.TestCase):
         self.assertEqual(check_url("https://learning.example.org/security/password-awareness")["signals"], [])
 
     def test_ip_address_is_flagged(self):
-        self.assertIn("URL uses an IP address instead of a named domain", messages(check_url("http://192.168.10.44/login")))
+        self.assertIn(
+            "URL uses an IP address instead of a named domain", messages(check_url("http://192.168.10.44/login"))
+        )
 
     def test_shortened_url_is_flagged(self):
         self.assertIn("URL uses a shortened-link service", messages(check_url("https://bit.ly/account-restore")))
@@ -36,7 +38,10 @@ class UrlChecksTest(unittest.TestCase):
         self.assertIn("URL uses an unusual network port", messages(check_url("https://example.org:8443/login")))
 
     def test_punycode_is_flagged(self):
-        self.assertIn("Domain uses punycode and may imitate another name", messages(check_url("https://xn--pple-43d.example/login")))
+        self.assertIn(
+            "Domain uses punycode and may imitate another name",
+            messages(check_url("https://xn--pple-43d.example/login")),
+        )
 
     def test_encoded_redirect_is_flagged_without_following(self):
         result = check_url("https://example.org/login?next=https%3A%2F%2Fevil.example")

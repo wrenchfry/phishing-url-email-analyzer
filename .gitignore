@@ -1,2 +1,8 @@
 __pycache__/
 *.pyc
+.ruff_cache/
+.venv/
+build/
+*.egg-info/
+reports/*.generated.md
+reports/*.generated.json

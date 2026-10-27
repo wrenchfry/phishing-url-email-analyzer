@@ -28,9 +28,23 @@ class EmailParserTest(unittest.TestCase):
 
 class SignalSummaryTest(unittest.TestCase):
     def test_group_scores_are_capped(self):
-        result = summarize_signals([
-            {"category": "URL structure", "severity": "high", "message": "one", "evidence": "", "recommendation": "a"},
-            {"category": "URL structure", "severity": "high", "message": "two", "evidence": "", "recommendation": "a"},
-        ])
+        result = summarize_signals(
+            [
+                {
+                    "category": "URL structure",
+                    "severity": "high",
+                    "message": "one",
+                    "evidence": "",
+                    "recommendation": "a",
+                },
+                {
+                    "category": "URL structure",
+                    "severity": "high",
+                    "message": "two",
+                    "evidence": "",
+                    "recommendation": "a",
+                },
+            ]
+        )
         self.assertEqual(result["groups"][0]["capped_score"], 5)
         self.assertEqual(result["overall_risk"], "High")

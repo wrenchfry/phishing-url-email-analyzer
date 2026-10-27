@@ -58,39 +58,127 @@ def check_url(url):
     domain = (parsed.hostname or "").lower().rstrip(".")
 
     if parsed.scheme.lower() != "https":
-        signals.append(signal("URL transport", "medium", "URL does not use HTTPS", url, "Do not submit information through this link."))
+        signals.append(
+            signal(
+                "URL transport", "medium", "URL does not use HTTPS", url, "Do not submit information through this link."
+            )
+        )
 
     if not domain:
-        signals.append(signal("URL structure", "medium", "Could not read the destination domain", url, "Verify the link with the sender through a trusted channel."))
+        signals.append(
+            signal(
+                "URL structure",
+                "medium",
+                "Could not read the destination domain",
+                url,
+                "Verify the link with the sender through a trusted channel.",
+            )
+        )
     elif is_ip_address(domain):
-        signals.append(signal("URL structure", "high", "URL uses an IP address instead of a named domain", domain, "Do not open the link; use the organisation's known website instead."))
+        signals.append(
+            signal(
+                "URL structure",
+                "high",
+                "URL uses an IP address instead of a named domain",
+                domain,
+                "Do not open the link; use the organisation's known website instead.",
+            )
+        )
 
     if registrable_domain(domain) in SHORTENED_URL_DOMAINS:
-        signals.append(signal("URL structure", "medium", "URL uses a shortened-link service", domain, "Preview or verify the final destination before opening it."))
+        signals.append(
+            signal(
+                "URL structure",
+                "medium",
+                "URL uses a shortened-link service",
+                domain,
+                "Preview or verify the final destination before opening it.",
+            )
+        )
 
     if subdomain_count(domain) >= 3:
-        signals.append(signal("URL structure", "medium", "URL has many subdomains", domain, "Check the registrable domain, not the words at the start of the link."))
+        signals.append(
+            signal(
+                "URL structure",
+                "medium",
+                "URL has many subdomains",
+                domain,
+                "Check the registrable domain, not the words at the start of the link.",
+            )
+        )
 
     if parsed.username:
-        signals.append(signal("URL structure", "high", "URL contains a user-info '@' trick", parsed.netloc, "Trust the hostname after '@', not the text before it."))
+        signals.append(
+            signal(
+                "URL structure",
+                "high",
+                "URL contains a user-info '@' trick",
+                parsed.netloc,
+                "Trust the hostname after '@', not the text before it.",
+            )
+        )
 
     try:
         port = parsed.port
     except ValueError:
         port = None
-        signals.append(signal("URL structure", "medium", "URL contains an invalid port", parsed.netloc, "Do not open malformed links."))
+        signals.append(
+            signal(
+                "URL structure", "medium", "URL contains an invalid port", parsed.netloc, "Do not open malformed links."
+            )
+        )
     if port and port not in {80, 443}:
-        signals.append(signal("URL structure", "medium", "URL uses an unusual network port", str(port), "Verify the destination before opening it."))
+        signals.append(
+            signal(
+                "URL structure",
+                "medium",
+                "URL uses an unusual network port",
+                str(port),
+                "Verify the destination before opening it.",
+            )
+        )
 
     if domain.startswith("xn--") or ".xn--" in domain:
-        signals.append(signal("URL identity", "high", "Domain uses punycode and may imitate another name", domain, "Type the known website address yourself instead of using the link."))
+        signals.append(
+            signal(
+                "URL identity",
+                "high",
+                "Domain uses punycode and may imitate another name",
+                domain,
+                "Type the known website address yourself instead of using the link.",
+            )
+        )
     elif any(ord(character) > 127 for character in domain):
-        signals.append(signal("URL identity", "high", "Domain contains non-ASCII characters that may be lookalikes", domain, "Type the known website address yourself instead of using the link."))
+        signals.append(
+            signal(
+                "URL identity",
+                "high",
+                "Domain contains non-ASCII characters that may be lookalikes",
+                domain,
+                "Type the known website address yourself instead of using the link.",
+            )
+        )
 
     if "%" in url:
-        signals.append(signal("URL structure", "low", "URL contains percent-encoded characters", url, "Inspect the decoded destination before trusting the link."))
+        signals.append(
+            signal(
+                "URL structure",
+                "low",
+                "URL contains percent-encoded characters",
+                url,
+                "Inspect the decoded destination before trusting the link.",
+            )
+        )
     if _has_encoded_redirect(parsed):
-        signals.append(signal("URL redirects", "medium", "URL contains a redirect target in its query string", url, "This tool did not follow the redirect; verify the final destination separately."))
+        signals.append(
+            signal(
+                "URL redirects",
+                "medium",
+                "URL contains a redirect target in its query string",
+                url,
+                "This tool did not follow the redirect; verify the final destination separately.",
+            )
+        )
 
     return {
         "url": url,

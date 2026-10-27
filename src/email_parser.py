@@ -59,8 +59,12 @@ def parse_eml(path):
 
 def parse_text(path):
     text = Path(path).read_text(encoding="utf-8")
-    from_display, from_address = parseaddr(next((line[5:].strip() for line in text.splitlines() if line.lower().startswith("from:")), ""))
-    reply_display, reply_address = parseaddr(next((line[9:].strip() for line in text.splitlines() if line.lower().startswith("reply-to:")), ""))
+    from_display, from_address = parseaddr(
+        next((line[5:].strip() for line in text.splitlines() if line.lower().startswith("from:")), "")
+    )
+    reply_display, reply_address = parseaddr(
+        next((line[9:].strip() for line in text.splitlines() if line.lower().startswith("reply-to:")), "")
+    )
     subject = next((line[8:].strip() for line in text.splitlines() if line.lower().startswith("subject:")), "")
     return {
         "is_eml": False,
