@@ -1,7 +1,10 @@
+"""Markdown report rendering for phishing triage results."""
+
 from datetime import datetime
 
 
 def build_markdown_report(analysis):
+    """Create a portable human-readable report from an analysis result."""
     lines = [
         "# Phishing Analysis Report",
         "",

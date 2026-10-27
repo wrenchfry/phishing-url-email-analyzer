@@ -1,3 +1,5 @@
+"""Checks for message wording, sender metadata, and attachment names."""
+
 import re
 from pathlib import Path
 
@@ -41,6 +43,7 @@ def _domain_from_address(address):
 
 
 def _attachment_signals(attachments):
+    """Flag risky attachment names without opening attachment contents."""
     signals = []
     for attachment in attachments:
         filename = attachment["filename"]

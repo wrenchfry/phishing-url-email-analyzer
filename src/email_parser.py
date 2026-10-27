@@ -1,3 +1,5 @@
+"""Local parsers for plain-text emails and RFC 5322 .eml messages."""
+
 from email import policy
 from email.parser import BytesParser
 from email.utils import parseaddr
@@ -5,6 +7,7 @@ from pathlib import Path
 
 
 def _text_parts(message):
+    """Collect readable plain-text email parts while excluding attachments."""
     parts = []
     for part in message.walk():
         if part.get_content_disposition() == "attachment":
@@ -20,6 +23,7 @@ def _text_parts(message):
 
 
 def _attachments(message):
+    """Return safe attachment metadata without saving or executing files."""
     attachments = []
     for part in message.iter_attachments():
         payload = part.get_payload(decode=True) or b""
@@ -58,6 +62,7 @@ def parse_eml(path):
 
 
 def parse_text(path):
+    """Read a plain-text email sample and extract its available headers."""
     text = Path(path).read_text(encoding="utf-8")
     from_display, from_address = parseaddr(
         next((line[5:].strip() for line in text.splitlines() if line.lower().startswith("from:")), "")
@@ -84,6 +89,7 @@ def parse_text(path):
 
 
 def read_message(path):
+    """Select the appropriate local parser based on the input file extension."""
     path = Path(path)
     if path.suffix.lower() == ".eml":
         return parse_eml(path)

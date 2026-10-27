@@ -1,3 +1,5 @@
+"""Shared signal shape and severity summarisation helpers."""
+
 from collections import defaultdict
 
 
@@ -7,6 +9,7 @@ GROUP_CAP = 5
 
 
 def signal(category, severity, message, evidence, recommendation):
+    """Create one explainable analysis finding."""
     return {
         "category": category,
         "severity": severity,

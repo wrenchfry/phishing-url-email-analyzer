@@ -1,3 +1,5 @@
+"""Offline URL parsing and phishing-indicator checks."""
+
 import ipaddress
 import re
 from urllib.parse import parse_qsl, unquote, urlparse
@@ -29,6 +31,7 @@ def is_ip_address(hostname):
 
 
 def registrable_domain(hostname):
+    """Return the registrable domain, preserving IP addresses unchanged."""
     hostname = hostname.lower().rstrip(".")
     if not hostname or is_ip_address(hostname):
         return hostname
@@ -46,6 +49,7 @@ def subdomain_count(domain):
 
 
 def _has_encoded_redirect(parsed):
+    """Detect a destination URL embedded in a common redirect parameter."""
     for name, value in parse_qsl(parsed.query, keep_blank_values=True):
         if name.lower() in REDIRECT_PARAMETER_NAMES and re.match(r"https?://", unquote(value), re.IGNORECASE):
             return True
@@ -53,6 +57,7 @@ def _has_encoded_redirect(parsed):
 
 
 def check_url(url):
+    """Inspect URL structure without connecting to the destination."""
     signals = []
     parsed = urlparse(url)
     domain = (parsed.hostname or "").lower().rstrip(".")

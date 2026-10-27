@@ -1,3 +1,5 @@
+"""Command-line entry point for local phishing triage."""
+
 import argparse
 import json
 import re
@@ -13,11 +15,13 @@ VERSION = "0.2.0"
 
 
 def extract_urls(text):
+    """Extract and de-duplicate HTTP(S) URLs without fetching them."""
     urls = re.findall(r"https?://[^\s]+", text, flags=re.IGNORECASE)
     return list(dict.fromkeys(url.rstrip(").,") for url in urls))
 
 
 def analyze_file(path):
+    """Build one complete offline analysis result for an email input file."""
     message = read_message(path)
     url_results = [check_url(url) for url in extract_urls(message["text"])]
     email_result = check_email_message(message, url_results)
@@ -32,6 +36,7 @@ def analyze_file(path):
 
 
 def print_terminal_report(analysis):
+    """Render a concise, human-readable version of an analysis result."""
     print("Summary\n-------")
     print(f"Overall risk: {analysis['summary']['overall_risk']}")
     print("Safety: this tool did not open URLs or attachments.\n")
